@@ -22,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
 
         Button expresoBT = (Button) findViewById(R.id.expresoBT);
         Button circuitoBT = (Button) findViewById(R.id.circuitoBT);
+        Button favBT = (Button) findViewById(R.id.favBT);
 
 
         View.OnClickListener registro = new View.OnClickListener() {
@@ -37,12 +38,17 @@ public class MainActivity extends ActionBarActivity {
                         Intent intentCir = new Intent(MainActivity.this, Rutas_act.class);
                         intentCir.putExtra("tipo","circuito");
                         startActivity(intentCir);
+                        break;
+                    case R.id.favBT:
+                        Intent intentFav = new Intent(MainActivity.this, Fav_Act.class);
+                        startActivity(intentFav);
                 }
             }
         };
 
         expresoBT.setOnClickListener(registro);
         circuitoBT.setOnClickListener(registro);
+        favBT.setOnClickListener(registro);
 
     }
 
