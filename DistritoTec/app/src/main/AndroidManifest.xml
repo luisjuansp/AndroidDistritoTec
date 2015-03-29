@@ -51,6 +51,10 @@
             android:name=".Rutas_act"
             android:label="@string/title_activity_rutas_act" >
         </activity>
+        <activity
+            android:name=".Fav_Act"
+            android:label="@string/title_activity_fav_" >
+        </activity>
     </application>
 
 </manifest>

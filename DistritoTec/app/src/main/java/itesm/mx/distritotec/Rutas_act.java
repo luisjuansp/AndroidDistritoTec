@@ -73,7 +73,7 @@ public class Rutas_act extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Ruta rutaLista = (Ruta) miAdaptador.getItem(position);
-                Toast.makeText(getApplicationContext(), rutaLista.getNombre(), Toast.LENGTH_SHORT).show();
+
 
                 Intent intent = new Intent(Rutas_act.this, InfoRuta.class);
                 intent.putExtra("nombre",rutaLista.getNombre());
