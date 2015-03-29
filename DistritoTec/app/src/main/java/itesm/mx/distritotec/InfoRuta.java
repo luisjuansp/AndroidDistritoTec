@@ -10,47 +10,49 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class InfoRuta extends ActionBarActivity {
 
-    TextView titleTV;
-
+    TextView infTipoTV;
+    TextView textView;
+    TextView infNombreTV;
+    TextView textView2;
+    TextView infHorarioTV;
+    TextView textView3;
+    TextView infInicioTV;
+    Button mapButtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_info_ruta);
 
-        Button expresoBT = (Button) findViewById(R.id.expresoBT);
-        Button circuitoBT = (Button) findViewById(R.id.circuitoBT);
+        Bundle extras = getIntent().getExtras();
+        infTipoTV = (TextView) findViewById(R.id.infTipoTV);
+        infNombreTV = (TextView) findViewById(R.id.infNombreTV);
+        infHorarioTV = (TextView) findViewById(R.id.infHorarioTV);
+        infInicioTV = (TextView) findViewById(R.id.infInicioTV);
 
+        mapButtn = (Button)findViewById(R.id.mapBT);
 
-        View.OnClickListener registro = new View.OnClickListener() {
+        infTipoTV.setText(extras.getString("tipo"));
+        infNombreTV.setText(extras.getString("nombre"));
+        infHorarioTV.setText(extras.getString("horario"));
+        infInicioTV.setText(extras.getString("inicio"));
+
+        mapButtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.expresoBT:
-                        Intent intentExp = new Intent(MainActivity.this, Rutas_act.class);
-                        intentExp.putExtra("tipo","expreso");
-                        startActivity(intentExp);
-                        break;
-                    case R.id.circuitoBT:
-                        Intent intentCir = new Intent(MainActivity.this, Rutas_act.class);
-                        intentCir.putExtra("tipo","circuito");
-                        startActivity(intentCir);
-                }
+                Intent intent = new Intent(InfoRuta.this, MapsActivity.class);
+                startActivity(intent);
             }
-        };
-
-        expresoBT.setOnClickListener(registro);
-        circuitoBT.setOnClickListener(registro);
-
+        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_info_ruta, menu);
         return true;
     }
 

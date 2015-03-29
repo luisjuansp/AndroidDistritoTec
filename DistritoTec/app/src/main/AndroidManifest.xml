@@ -33,11 +33,23 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyCuy_rDEbPQOHbhrGxNHd4159biEcShXBM" />
 
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name=".InfoRuta"
+            android:label="@string/title_activity_info_ruta" >
+        </activity>
+        <activity
+            android:name=".Rutas"
+            android:label="@string/title_activity_rutas" >
+        </activity>
+        <activity
+            android:name=".Rutas_act"
+            android:label="@string/title_activity_rutas_act" >
         </activity>
     </application>
 

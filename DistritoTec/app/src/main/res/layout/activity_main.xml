@@ -1,28 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#ff00ff98"
+    android:weightSum="1">
 
-    <TextView android:text="Hola Mundo" android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:text="Distrito TEC"
+        android:layout_marginTop="60dp"
+        android:id="@+id/titleTV"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40dp"
+        android:textColor="#ff000000" />
+
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="Expreso"
+        android:layout_marginTop="50dp"
+        android:id="@+id/expresoBT"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.06" />
+
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="Circuito"
+        android:layout_marginTop="60dp"
+        android:id="@+id/circuitoBT"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.07" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favs"
-        android:id="@+id/favsMainBtn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get Location"
-        android:id="@+id/locationMainBtn"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+        android:text="Favoritos"
+        android:layout_marginTop="60dp"
+        android:id="@+id/favBT"
+        android:layout_gravity="right"
+        android:layout_weight="0.07" />
+</LinearLayout>
