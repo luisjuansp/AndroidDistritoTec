@@ -1,6 +1,7 @@
 package itesm.mx.distritotec;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import java.lang.Object;
+import java.util.ArrayList;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -20,7 +22,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+
 
 public class MapsActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -30,12 +36,15 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
         buildGoogleApiClient();
+
+
     }
 
     @Override
@@ -67,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-                setUpMap();
+                //setUpMap();
             }
         }
     }
@@ -135,6 +144,26 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
         mMap.addMarker((new MarkerOptions()
                 .position(new LatLng(lat, lon))
                 .title("Current Pos")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.6535527, -100.2898306))
+                .title("Dummy")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.6506706, -100.2864832))
+                .title("Dummy2")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.6480302, -100.2900237))
+                .title("Dummy3")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.6516377, -100.2922016))
+                .title("Dummy4")));
+
+        Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.6535527,-100.2898306),
+                new LatLng(25.6506706,-100.2864832),
+                new LatLng(25.6480302,-100.2900237),
+                new LatLng(25.6516377,-100.2922016)).strokeColor(Color.RED));
+
+
+
     }
 }
 
