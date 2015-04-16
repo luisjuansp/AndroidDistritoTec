@@ -119,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
                 mGoogleApiClient);
         if (mLastLocation != null) {
             setLocOnMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),17));
         }
     }
 
