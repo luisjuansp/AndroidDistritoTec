@@ -60,9 +60,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        Intent intent = getIntent();
-        String pos = intent.getStringExtra("pos");
-        maps.setText(pos);
+
 
     }
 
@@ -71,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
             if(resultCode == RESULT_OK){
                 String pos = data.getStringExtra("pos");
                 myFirebaseRef.child("response").setValue(pos);
+                Toast.makeText(getApplicationContext(), "sending new location", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -136,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
             Intent intent = new Intent();
             intent.putExtra("pos",mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
             setResult(RESULT_OK, intent);
-
+            Log.i("", "THE VALUE OF COORDINATES HAS CHANGED, RETURNING");
             finish();
         }
     }
