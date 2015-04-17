@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
         You should have received a copy of the GNU General Public License
         along with DistritoTec.  If not, see <http://www.gnu.org/licenses/>.*/
 public class MapsActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+    LatLng tec = new LatLng(25.649713, -100.290032);
 
     protected static final String TAG = "basic-location-sample";
 
@@ -134,6 +135,7 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
             setLocOnMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),17));
         }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude()),17));
     }
 
     @Override
@@ -159,17 +161,32 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
                 .position(new LatLng(lat, lon))
                 .title("Current Pos")));
         mMap.addMarker((new MarkerOptions()
-                .position(new LatLng(25.6535527, -100.2898306))
+                .position(new LatLng(25.653170, -100.389912))
                 .title("Dummy")));
         mMap.addMarker((new MarkerOptions()
-                .position(new LatLng(25.6506706, -100.2864832))
+                .position(new LatLng(25.655767, -100.385106))
                 .title("Dummy2")));
         mMap.addMarker((new MarkerOptions()
-                .position(new LatLng(25.6480302, -100.2900237))
+                .position(new LatLng(25.667414, -100.379827))
                 .title("Dummy3")));
         mMap.addMarker((new MarkerOptions()
-                .position(new LatLng(25.6516377, -100.2922016))
+                .position(new LatLng(25.664958, -100.374935))
                 .title("Dummy4")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.663952, -100.358112))
+                .title("Dummy5")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.652501, -100.358198))
+                .title("Dummy6")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.659968, -100.349379))
+                .title("Dummy7")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.644222, -100.323861))
+                .title("Dummy8")));
+        mMap.addMarker((new MarkerOptions()
+                .position(new LatLng(25.614661, -100.271144))
+                .title("Dummy9")));
 
         Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.6535527,-100.2898306),
                 new LatLng(25.6506706,-100.2864832),
