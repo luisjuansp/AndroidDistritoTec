@@ -1,6 +1,10 @@
 package itesm.mx.distritotec;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -39,6 +43,10 @@ public class InfoRuta extends ActionBarActivity {
     Button mapButtn;
     Button addFav;
     FavoriteOperations dao;
+    WifiP2pManager mManager;
+    WifiP2pManager.Channel mChannel;
+    BroadcastReceiver mReceiver;
+    IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +59,17 @@ public class InfoRuta extends ActionBarActivity {
         infNombreTV = (TextView) findViewById(R.id.infNombreTV);
         infHorarioTV = (TextView) findViewById(R.id.infHorarioTV);
         infInicioTV = (TextView) findViewById(R.id.infInicioTV);
-
+        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(this, getMainLooper(), null);
+        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
         mapButtn = (Button)findViewById(R.id.mapBT);
         addFav = (Button) findViewById(R.id.button);
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
 
         infTipoTV.setText(extras.getString("tipo"));
         infNombreTV.setText(extras.getString("nombre"));
@@ -104,12 +120,14 @@ public class InfoRuta extends ActionBarActivity {
             e.printStackTrace();
         }
         super.onResume();
+        registerReceiver(mReceiver, mIntentFilter);
     }
 
     @Override
     protected void onPause() {
         dao.close();
         super.onPause();
+        unregisterReceiver(mReceiver);
     }
 
     @Override

@@ -47,7 +47,7 @@
             android:label="@string/title_activity_info_ruta" >
         </activity>
         <activity
-            android:name=".Rutas"
+            android:name=".Ruta"
             android:label="@string/title_activity_rutas" >
         </activity>
         <activity

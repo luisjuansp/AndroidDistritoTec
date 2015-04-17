@@ -23,6 +23,28 @@ public class MainActivity extends ActionBarActivity {
         View.OnClickListener registro = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * v
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * v
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * v
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * Manda a pedir la pocision
+                * v
+                * Manda a pedir la pocision
+                * */
                 Intent intentExp = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intentExp);
             }
@@ -33,6 +55,25 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /*
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        *
+        * OBTIENE POSICION
+        *
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        *
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        *
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        * OBTIENE POSICION
+        * */
         Intent intent = getIntent();
         String pos = intent.getStringExtra("pos");
         maps.setText(pos);
