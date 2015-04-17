@@ -39,7 +39,7 @@ public class WaitingLocation extends ActionBarActivity {
         myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if(!snapshot.getValue().toString().equals("0")){
+
                     newLatLon=snapshot.getValue().toString();
                     String[] separate = newLatLon.split(",");
                     newLat = Double.parseDouble(separate[0]);
@@ -48,7 +48,7 @@ public class WaitingLocation extends ActionBarActivity {
                     intentToMaps.putExtra("newLat", newLat);
                     intentToMaps.putExtra("newLon", newLon);
                     startActivity(intentToMaps);
-                }
+
             }
             @Override public void onCancelled(FirebaseError error) { }
         });

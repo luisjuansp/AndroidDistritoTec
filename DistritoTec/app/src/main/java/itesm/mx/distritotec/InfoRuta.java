@@ -20,6 +20,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 
 /*This file is part of DistritoTec.
@@ -58,6 +59,8 @@ public class InfoRuta extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Random randomGenerator = new Random();
+        cont = randomGenerator.nextInt(100);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_ruta);
 
@@ -110,7 +113,7 @@ public class InfoRuta extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InfoRuta.this, WaitingLocation.class);
-                intent.putExtra("counter", cont);
+                intent.putExtra("counter", cont++);
                 startActivity(intent);
             }
         });

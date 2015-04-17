@@ -35,10 +35,10 @@ public class MainActivity extends ActionBarActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 reqString=snapshot.getValue().toString();
 
-                if(!reqString.equals("0")){
+
                     Intent intentExp = new Intent(MainActivity.this, MapsActivity.class);
                     startActivityForResult(intentExp,1);
-                }
+
             }
             @Override public void onCancelled(FirebaseError error) { }
         });
