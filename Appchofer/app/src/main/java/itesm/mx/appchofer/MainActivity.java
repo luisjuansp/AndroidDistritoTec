@@ -3,48 +3,52 @@ package itesm.mx.appchofer;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 
 public class MainActivity extends ActionBarActivity {
+    Firebase myFirebaseRef;
 
     Button location;
     TextView maps;
+    String reqString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Firebase.setAndroidContext(this);
+        myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
+
+        myFirebaseRef.child("request").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                reqString=snapshot.getValue().toString();
+
+                if(!reqString.equals("0")){
+                    Intent intentExp = new Intent(MainActivity.this, MapsActivity.class);
+                    startActivityForResult(intentExp,1);
+                }
+            }
+            @Override public void onCancelled(FirebaseError error) { }
+        });
+
         location = (Button)findViewById(R.id.button);
         maps = (TextView) findViewById(R.id.mapTV);
         View.OnClickListener registro = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * v
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * v
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * v
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * Manda a pedir la pocision
-                * v
-                * Manda a pedir la pocision
-                * */
+
                 Intent intentExp = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intentExp);
             }
@@ -55,28 +59,20 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /*
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        *
-        * OBTIENE POSICION
-        *
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        *
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        *
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        * OBTIENE POSICION
-        * */
+
         Intent intent = getIntent();
         String pos = intent.getStringExtra("pos");
         maps.setText(pos);
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String pos = data.getStringExtra("pos");
+                myFirebaseRef.child("response").setValue(pos);
+            }
+        }
     }
 
 

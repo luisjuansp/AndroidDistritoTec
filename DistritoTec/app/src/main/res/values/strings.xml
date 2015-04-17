@@ -9,5 +9,6 @@
     <string name="title_activity_rutas">Rutas</string>
     <string name="title_activity_rutas_act">Rutas_act</string>
     <string name="title_activity_fav_">Fav_Act</string>
+    <string name="title_activity_waiting_location">WaitingLocation</string>
 
 </resources>

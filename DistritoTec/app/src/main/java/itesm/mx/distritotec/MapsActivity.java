@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,10 @@ import android.widget.Toast;
 import java.lang.Object;
 import java.util.ArrayList;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +47,11 @@ import com.google.android.gms.maps.model.PolygonOptions;
         You should have received a copy of the GNU General Public License
         along with DistritoTec.  If not, see <http://www.gnu.org/licenses/>.*/
 public class MapsActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+
+    double newLat;
+    double newLon;
+
+
     LatLng tec = new LatLng(25.649713, -100.290032);
 
     protected static final String TAG = "basic-location-sample";
@@ -55,11 +65,28 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            newLat = extras.getDouble("newLat");
+            newLon = extras.getDouble("newLon");
+        }
+
+        Log.i("This is what i want", String.valueOf(newLat));
+
+
+
         setUpMapIfNeeded();
         buildGoogleApiClient();
 
 
+
+
+
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -129,13 +156,11 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            setLocOnMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),17));
-        }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude()),17));
+
+
+        setLocOnMap(newLat, newLon);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat, newLon),17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat,newLon),17));
     }
 
     @Override
@@ -196,5 +221,7 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
 
 
     }
+
+
 }
 

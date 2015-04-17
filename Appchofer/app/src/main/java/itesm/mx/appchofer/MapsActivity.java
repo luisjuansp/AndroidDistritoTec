@@ -133,9 +133,10 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
                 mGoogleApiClient);
         if (mLastLocation != null) {
             setLocOnMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+            Intent intent = new Intent();
             intent.putExtra("pos",mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
-            startActivity(intent);
+            setResult(RESULT_OK, intent);
+
             finish();
         }
     }

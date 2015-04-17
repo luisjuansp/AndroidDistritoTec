@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.sql.SQLException;
 
 
@@ -32,6 +37,9 @@ import java.sql.SQLException;
         You should have received a copy of the GNU General Public License
         along with DistritoTec.  If not, see <http://www.gnu.org/licenses/>.*/
 public class InfoRuta extends ActionBarActivity {
+
+    Firebase myFirebaseRef;
+    int cont=1;
 
     TextView infTipoTV;
     TextView textView;
@@ -52,6 +60,21 @@ public class InfoRuta extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_ruta);
+
+        Firebase.setAndroidContext(this);
+        myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
+
+        myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+
+          }
+
+          @Override
+          public void onCancelled(FirebaseError firebaseError) {
+
+          }
+        });
 
         dao = new FavoriteOperations(this);
         Bundle extras = getIntent().getExtras();
@@ -86,7 +109,8 @@ public class InfoRuta extends ActionBarActivity {
         mapButtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InfoRuta.this, MapsActivity.class);
+                Intent intent = new Intent(InfoRuta.this, WaitingLocation.class);
+                intent.putExtra("counter", cont);
                 startActivity(intent);
             }
         });
@@ -120,14 +144,15 @@ public class InfoRuta extends ActionBarActivity {
             e.printStackTrace();
         }
         super.onResume();
-        registerReceiver(mReceiver, mIntentFilter);
+        cont++;
+
     }
 
     @Override
     protected void onPause() {
         dao.close();
         super.onPause();
-        unregisterReceiver(mReceiver);
+
     }
 
     @Override
