@@ -3,17 +3,13 @@ package itesm.mx.distritotec;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
-import java.util.Random;
 
 
 public class WaitingLocation extends ActionBarActivity {
@@ -44,7 +40,7 @@ public class WaitingLocation extends ActionBarActivity {
                     String[] separate = newLatLon.split(",");
                     newLat = Double.parseDouble(separate[0]);
                     newLon = Double.parseDouble(separate[1]);
-                    Intent intentToMaps = new Intent(getApplicationContext(), MapsActivity.class);
+                    Intent intentToMaps = new Intent(getApplicationContext(), PathGoogleMapActivity.class);
                     intentToMaps.putExtra("newLat", newLat);
                     intentToMaps.putExtra("newLon", newLon);
                     startActivity(intentToMaps);
