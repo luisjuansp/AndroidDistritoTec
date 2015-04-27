@@ -1,5 +1,6 @@
 package itesm.mx.distritotec;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 import java.lang.Object;
 import java.util.ArrayList;
@@ -78,12 +80,6 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
 
         setUpMapIfNeeded();
         buildGoogleApiClient();
-
-
-
-
-
-
     }
 
 
@@ -219,6 +215,31 @@ public class MapsActivity extends FragmentActivity implements ConnectionCallback
                 new LatLng(25.6516377,-100.2922016)).strokeColor(Color.RED));
 
 
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)) {
+            Intent backIntent = new Intent();
+            setResult(Activity.RESULT_OK, backIntent);
+            Log.i("PRESSING BACK","IN MAPS ACTIVITY");
+            finish();
+            return true;
+
+        }
+
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backIntent = new Intent();
+        setResult(Activity.RESULT_OK, backIntent);
+        Log.i("PRESSING BACK","IN MAPS ACTIVITY");
+        finish();
 
     }
 

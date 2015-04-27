@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,17 +58,25 @@ public class InfoRuta extends ActionBarActivity {
     BroadcastReceiver mReceiver;
     IntentFilter mIntentFilter;
 
+    String route;
+    String idStudent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("ENTERING METHOD", "INFORUTA ONCREATE");
         Random randomGenerator = new Random();
-        cont = randomGenerator.nextInt(100);
+        idStudent = Integer.toString(randomGenerator.nextInt(10000));
+
+        Random randomGenerator2 = new Random();
+        cont = randomGenerator2.nextInt(100);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_ruta);
 
         Firebase.setAndroidContext(this);
         myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
 
-        myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
+        /*myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -77,7 +86,7 @@ public class InfoRuta extends ActionBarActivity {
           public void onCancelled(FirebaseError firebaseError) {
 
           }
-        });
+        });*/
 
         dao = new FavoriteOperations(this);
         Bundle extras = getIntent().getExtras();
@@ -102,6 +111,9 @@ public class InfoRuta extends ActionBarActivity {
         infHorarioTV.setText(extras.getString("horario"));
         infInicioTV.setText(extras.getString("inicio"));
 
+        route = extras.getString("nombre");
+        Log.i("RUTA NAME" ,route);
+
         try {
             dao.open();
         } catch (SQLException e) {
@@ -114,7 +126,9 @@ public class InfoRuta extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(InfoRuta.this, WaitingLocation.class);
                 intent.putExtra("counter", cont++);
-                startActivity(intent);
+                intent.putExtra("route", route);
+                intent.putExtra("idStudent", idStudent);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -141,21 +155,44 @@ public class InfoRuta extends ActionBarActivity {
 
     @Override
     protected void onResume() {
+        Log.i("ENTERING METHOD", "INFORUTA ONRESUME");
+
         try {
             dao.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        super.onResume();
+
         cont++;
+        Random randomGenerator = new Random();
+        idStudent = Integer.toString(randomGenerator.nextInt(10000));
+
+        super.onResume();
+
 
     }
 
+
+
     @Override
     protected void onPause() {
+        Log.i("ENTERING METHOD", "INFORUTA ONPAUSE");
+
         dao.close();
         super.onPause();
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        //if (requestCode == 1) {
+        if(resultCode == RESULT_OK){
+            Log.i("ENTERING METHOD", "INFORUTA ON ACTIVITY RESULT");
+            Firebase del = new Firebase("https://blistering-inferno-2546.firebaseio.com/" + route + "/" + idStudent);
+            del.removeValue();
+            finish();
+            Log.i("WAITING LOCATION", "THE BRANCH SHOULD ALREADY BE DELETED (onActivityResult)");
+        }
+        //}
     }
 
     @Override

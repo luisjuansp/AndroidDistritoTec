@@ -1,10 +1,14 @@
 package itesm.mx.distritotec;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -16,46 +20,103 @@ public class WaitingLocation extends ActionBarActivity {
 
     Firebase myFirebaseRef;
     int cont;
+    String route;
+    String idStudent;
     double newLat;
     double newLon;
     String newLatLon;
+    boolean DeleteStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("ENTERING METHOD", "WAITINGLOCATION ONCREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_location);
 
         Bundle ex = getIntent().getExtras();
         cont=ex.getInt("counter");
-
+        route = ex.getString("route");
+        idStudent = ex.getString("idStudent");
+        DeleteStudent = false;
 
         Firebase.setAndroidContext(this);
         myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
-        myFirebaseRef.child("request").setValue(cont);
-        myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
 
-                    newLatLon=snapshot.getValue().toString();
-                    String[] separate = newLatLon.split(",");
-                    newLat = Double.parseDouble(separate[0]);
-                    newLon = Double.parseDouble(separate[1]);
-                    Intent intentToMaps = new Intent(getApplicationContext(), PathGoogleMapActivity.class);
-                    intentToMaps.putExtra("newLat", newLat);
-                    intentToMaps.putExtra("newLon", newLon);
-                    startActivity(intentToMaps);
+
+
+        myFirebaseRef.child(route).child(idStudent).setValue("1");
+        //myFirebaseRef.child(route).child(idStudent).child("response").setValue("1");
+
+        myFirebaseRef.child(route).child(idStudent).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("WAITINGLOCATION","VALUSE EVENT LISTENER, DATA IS "+dataSnapshot.getValue());
+                if (dataSnapshot.exists()){
+                    if ((!dataSnapshot.getValue().toString().equals("1"))){
+                        newLatLon = dataSnapshot.getValue().toString();
+                        String[] separate = newLatLon.split(",");
+                        newLat = Double.parseDouble(separate[0]);
+                        newLon = Double.parseDouble(separate[1]);
+                        Intent intentToMaps = new Intent(getApplicationContext(), PathGoogleMapActivity.class);
+                        intentToMaps.putExtra("newLat", newLat);
+                        intentToMaps.putExtra("newLon", newLon);
+                        DeleteStudent = true;
+                        startActivityForResult(intentToMaps,1);
+                    }
+                }
 
             }
-            @Override public void onCancelled(FirebaseError error) { }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
         });
+
+
+
+
     }
+
+
 
     @Override
     protected void onResume() {
+        Log.i("ENTERING METHOD", "WAITINGLOCATION ONRESUME");
         super.onResume();
+        if(DeleteStudent){
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            Log.i("PRESSING BACK","IN WAITINGLOCATION ACTIVITY");
+            finish();
+        }
 
-        finish();
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        //if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                Log.i("ENTERING METHOD", "WAITINGLOCATION ON ACTIVITY RESULT");
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_OK, resultIntent);
+                Log.i("GOING BACK","IN WAITINGLOCATION ACTIVITY");
+                finish();
+            }
+        //}
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            Log.i("PRESSING BACK","IN WAITINGLOCATION ACTIVITY");
+            finish();
+            return true;
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 

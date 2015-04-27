@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 
 /*This file is part of DistritoTec.
 
@@ -29,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     TextView titleTV;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
                     case R.id.expresoBT:
                         Intent intentExp = new Intent(MainActivity.this, Rutas_act.class);
                         intentExp.putExtra("tipo","expreso");
+
                         startActivity(intentExp);
                         break;
                     case R.id.circuitoBT:

@@ -52,7 +52,7 @@ public class Rutas_act extends ActionBarActivity {
 
         if (extras.getString("tipo").equals("expreso")){
             tipo = "Expreso";
-            nombres= new String[]{"Valle1", "Cumbres", "San Nicolás"};
+            nombres= new String[]{"Valle1", "Cumbres", "San Nicolas"};
             inicios = new String[]{"Vasconcelos", "A. de Rodas", "Rep. Mexicana"};
             horarios = new String[]{"6:00-7:15","10:15-11:00","7:00-8:15"};
 
