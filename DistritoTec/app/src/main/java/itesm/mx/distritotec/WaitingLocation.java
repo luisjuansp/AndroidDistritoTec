@@ -60,6 +60,7 @@ public class WaitingLocation extends ActionBarActivity {
                         Intent intentToMaps = new Intent(getApplicationContext(), PathGoogleMapActivity.class);
                         intentToMaps.putExtra("newLat", newLat);
                         intentToMaps.putExtra("newLon", newLon);
+                        intentToMaps.putExtra("counter", cont++);
                         DeleteStudent = true;
                         startActivityForResult(intentToMaps,1);
                     }

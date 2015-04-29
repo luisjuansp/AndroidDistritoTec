@@ -21,6 +21,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -81,7 +82,9 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
 
     double newLat;
     double newLon;
-
+    Integer cont = 1;
+    Marker chofer;
+    Firebase myFirebaseRef;
 
     LatLng tec = new LatLng(25.649713, -100.290032);
 
@@ -101,6 +104,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
         if (extras != null) {
             newLat = extras.getDouble("newLat");
             newLon = extras.getDouble("newLon");
+            cont= extras.getInt("counter");
         }
 
         Log.i("This is what i want", String.valueOf(newLat));
@@ -118,12 +122,12 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
         ReadTask downloadTask = new ReadTask();
         downloadTask.execute(url);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ITESM,
-                13));
         addMarkers();
 
 
-
+        Firebase.setAndroidContext(this);
+        myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
+        myFirebaseRef.child("request").setValue(cont);
 
 
     }
@@ -153,7 +157,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                     .title("First Point"));
             mMap.addMarker(new MarkerOptions().position(waypoint2)
                     .title("Second Point"));
-
+            mMap.setMyLocationEnabled(true);
 
         }
     }
@@ -223,6 +227,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             }
 
             mMap.addPolyline(polyLineOptions);
+            new Task().execute(0);
         }
     }
 
@@ -321,13 +326,47 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
 
     public void setLocOnMap(double lat, double lon){
         mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 5000, null);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
-        mMap.addMarker((new MarkerOptions()
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),17));
+        chofer = mMap.addMarker((new MarkerOptions()
                 .position(new LatLng(lat, lon))
-                .title("Current Pos")));
-
+                .title("Camion")));
+        myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String newLatLon = snapshot.getValue().toString();
+                String[] separate = newLatLon.split(",");
+                newLat = Double.parseDouble(separate[0]);
+                newLon = Double.parseDouble(separate[1]);
+                chofer.setPosition(new LatLng(newLat, newLon));
+            }
+            @Override public void onCancelled(FirebaseError error) { }
+        });
     }
 
+    class Task extends  AsyncTask<Integer, Integer, Boolean> {
 
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            while (mGoogleApiClient.isConnected()) {
+                publishProgress(0);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            if (mGoogleApiClient.isConnected()) {
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                myFirebaseRef.child("request").setValue(cont);
+                Log.i("Sent Request Value ", cont.toString() + ": " + newLat + ", " + newLon);
+            }
+        }
+    }
 }
 
