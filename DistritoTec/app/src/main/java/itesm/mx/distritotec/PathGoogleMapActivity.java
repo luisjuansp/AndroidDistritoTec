@@ -1,5 +1,6 @@
 package itesm.mx.distritotec;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -85,6 +86,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
     Integer cont = 1;
     Marker chofer;
     Firebase myFirebaseRef;
+    String route;
+    String idStudent;
 
     LatLng tec = new LatLng(25.649713, -100.290032);
 
@@ -105,6 +108,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             newLat = extras.getDouble("newLat");
             newLon = extras.getDouble("newLon");
             cont= extras.getInt("counter");
+            route = extras.getString("route");
+            idStudent = extras.getString("idStudent");
         }
 
         Log.i("This is what i want", String.valueOf(newLat));
@@ -127,7 +132,6 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
 
         Firebase.setAndroidContext(this);
         myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
-        myFirebaseRef.child("request").setValue(cont);
 
 
     }
@@ -330,14 +334,19 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
         chofer = mMap.addMarker((new MarkerOptions()
                 .position(new LatLng(lat, lon))
                 .title("Camion")));
-        myFirebaseRef.child("response").addValueEventListener(new ValueEventListener() {
+        myFirebaseRef.child(route).child(idStudent).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                String newLatLon = snapshot.getValue().toString();
-                String[] separate = newLatLon.split(",");
-                newLat = Double.parseDouble(separate[0]);
-                newLon = Double.parseDouble(separate[1]);
-                chofer.setPosition(new LatLng(newLat, newLon));
+                if (snapshot.exists()){
+                    if (!snapshot.getValue().toString().equals("1") && !snapshot.getValue().toString().equals("2")){
+                        String newLatLon = snapshot.getValue().toString();
+                        String[] separate = newLatLon.split(",");
+                        newLat = Double.parseDouble(separate[0]);
+                        newLon = Double.parseDouble(separate[1]);
+                        chofer.setPosition(new LatLng(newLat, newLon));
+                    }
+                }
+
             }
             @Override public void onCancelled(FirebaseError error) { }
         });
@@ -363,10 +372,20 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             super.onProgressUpdate(values);
             if (mGoogleApiClient.isConnected()) {
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                myFirebaseRef.child("request").setValue(cont);
+                myFirebaseRef.child(route).child(idStudent).setValue("2");
                 Log.i("Sent Request Value ", cont.toString() + ": " + newLat + ", " + newLon);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backIntent = new Intent();
+        setResult(Activity.RESULT_OK, backIntent);
+        Log.i("PRESSING BACK","IN MAPS ACTIVITY");
+        Toast.makeText(getApplicationContext(), "PRESSING BACK", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
 

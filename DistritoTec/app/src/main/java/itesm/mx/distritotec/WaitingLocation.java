@@ -26,6 +26,7 @@ public class WaitingLocation extends ActionBarActivity {
     double newLon;
     String newLatLon;
     boolean DeleteStudent;
+    ValueEventListener mapListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,10 @@ public class WaitingLocation extends ActionBarActivity {
         myFirebaseRef.child(route).child(idStudent).setValue("1");
         //myFirebaseRef.child(route).child(idStudent).child("response").setValue("1");
 
-        myFirebaseRef.child(route).child(idStudent).addValueEventListener(new ValueEventListener() {
+
+        mapListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("WAITINGLOCATION","VALUSE EVENT LISTENER, DATA IS "+dataSnapshot.getValue());
                 if (dataSnapshot.exists()){
                     if ((!dataSnapshot.getValue().toString().equals("1"))){
                         newLatLon = dataSnapshot.getValue().toString();
@@ -61,6 +62,8 @@ public class WaitingLocation extends ActionBarActivity {
                         intentToMaps.putExtra("newLat", newLat);
                         intentToMaps.putExtra("newLon", newLon);
                         intentToMaps.putExtra("counter", cont++);
+                        intentToMaps.putExtra("route", route);
+                        intentToMaps.putExtra("idStudent", idStudent);
                         DeleteStudent = true;
                         startActivityForResult(intentToMaps,1);
                     }
@@ -72,7 +75,10 @@ public class WaitingLocation extends ActionBarActivity {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        };
+
+        myFirebaseRef.child(route).child(idStudent).addValueEventListener(mapListener);
+
 
 
 
@@ -118,6 +124,13 @@ public class WaitingLocation extends ActionBarActivity {
 
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        myFirebaseRef.child(route).child(idStudent).removeEventListener(mapListener);
+
     }
 
 

@@ -89,6 +89,37 @@ public class MainActivity extends ActionBarActivity {
                                 Toast.makeText(getApplicationContext(), "Wait, gps is loading", Toast.LENGTH_SHORT).show();
                             }
                         }
+                        myFirebaseRef.child(selectedRoute).child(idStudent).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    if (dataSnapshot.getValue().toString().equals("2")){
+                                        mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                                        mlocListener = new MyLocationListener();
+                                        mlocManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
+                                        if (mlocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                                            if(MyLocationListener.latitude>0)
+                                            {
+                                                position = String.valueOf(MyLocationListener.latitude) + "," + String.valueOf(MyLocationListener.longitude);
+                                                myFirebaseRef.child(selectedRoute).child(idStudent).setValue(position);
+                                                Toast.makeText(getApplicationContext(), "sending new location to " + selectedRoute, Toast.LENGTH_SHORT).show();
+
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Wait, gps is loading", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
                     }
                 }
 
