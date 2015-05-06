@@ -197,7 +197,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
         Firebase.setAndroidContext(this);
         myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
 
-        new Task().execute(0);
+        
 
 
     }
@@ -309,7 +309,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             }
 
             mMap.addPolyline(polyLineOptions);
-            
+            new Task().execute(0);
         }
     }
 
