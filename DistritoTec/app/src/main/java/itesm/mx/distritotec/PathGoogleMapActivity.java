@@ -78,6 +78,24 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
     private static final LatLng waypoint10 = new LatLng(25.613854, -100.273715);
     private static final LatLng waypoint11 = new LatLng(25.654238, -100.357560);
 
+    //coordenadas San Nicolas
+    private static final LatLng waypointSN = new LatLng(25.769070, -100.272682);
+    private static final LatLng waypointSN2 = new LatLng(25.750626, -100.269391);
+    private static final LatLng waypointSN4 = new LatLng(25.744673, -100.290677);
+    private static final LatLng waypointSN3 = new LatLng(25.742225, -100.274716);
+    private static final LatLng waypointSN5 = new LatLng(25.740172, -100.302408);
+    private static final LatLng waypointSN6 = new LatLng(25.749301, -100.299494);
+    private static final LatLng waypointSN7 = new LatLng(25.742387, -100.304157);
+    private static final LatLng waypointSN8 = new LatLng(25.723599, -100.317097);
+    private static final LatLng waypointSN9 = new LatLng(25.665815, -100.299899);
+
+    //coordenadas san jemo
+    private static final LatLng waypointSJ = new LatLng(25.695419, -100.372241);
+    private static final LatLng waypointSJ2 = new LatLng(25.686937, -100.369802);
+    private static final LatLng waypointSJ3 = new LatLng(25.681281, -100.370944);
+    private static final LatLng waypointSJ4 = new LatLng(25.680800, -100.366253);
+    private static final LatLng waypointSJ5 = new LatLng(25.680810, -100.361586);
+
 
 
 
@@ -88,6 +106,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
     Firebase myFirebaseRef;
     String route;
     String idStudent;
+    String waypoints;
+    String origin;
 
     LatLng tec = new LatLng(25.649713, -100.290032);
 
@@ -122,12 +142,56 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                 .findFragmentById(R.id.map);
         mMap = fm.getMap();
 
-
-        String url = getMapsApiDirectionsUrl();
-        ReadTask downloadTask = new ReadTask();
-        downloadTask.execute(url);
-
-        addMarkers();
+        if(route.equals("Valle1")){
+            waypoints = "waypoints=optimize:true|"
+                    + waypoint4.latitude + "," + waypoint4.longitude
+                    + "|" + waypoint5.latitude + "," + waypoint5.longitude
+                    + "|" + waypoint6.latitude + "," + waypoint6.longitude
+                    + "|" + waypoint7.latitude + "," + waypoint7.longitude
+                    + "|" + waypoint8.latitude + "," + waypoint8.longitude
+                    + "|" + waypoint9.latitude + "," + waypoint9.longitude
+                    + "|" + waypoint10.latitude + "," + waypoint10.longitude
+                    + "|" + waypoint11.latitude + "," + waypoint11.longitude;
+            origin = "origin=" + waypoint2.latitude + ","+ waypoint2.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+            addMarkersValle();
+        }
+        if(route.equals("Cumbres")){
+            waypoints = "waypoints=optimize:true|"
+                    + waypointSJ2.latitude + "," + waypointSJ2.longitude
+                    + "|" + waypointSJ3.latitude + "," + waypointSJ3.longitude
+                    + "|" + waypointSJ4.latitude + "," + waypointSJ4.longitude
+                    + "|" + waypointSJ5.latitude + "," + waypointSJ5.longitude;
+            origin = "origin=" + waypointSJ.latitude + ","+ waypointSJ.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+            addMarkersSJ();
+        }
+        if(route.equals("San Nicolas")){
+            waypoints = "waypoints=optimize:true|"
+                    + waypointSN2.latitude + "," + waypointSN2.longitude
+                    + "|" + waypointSN3.latitude + "," + waypointSN3.longitude
+                    + "|" + waypointSN4.latitude + "," + waypointSN4.longitude
+                    + "|" + waypointSN5.latitude + "," + waypointSN5.longitude
+                    + "|" + waypointSN6.latitude + "," + waypointSN6.longitude
+                    + "|" + waypointSN7.latitude + "," + waypointSN7.longitude
+                    + "|" + waypointSN8.latitude + "," + waypointSN8.longitude
+                    + "|" + waypointSN9.latitude + "," + waypointSN9.longitude;
+            origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+            addMarkersSN();
+        }
+        if(route.equals("Circuito1")){
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
+                    new LatLng(25.662611, -100.297167),
+                    new LatLng(25.660222, -100.282297),
+                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+        }
 
 
         Firebase.setAndroidContext(this);
@@ -136,35 +200,47 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
 
     }
     private String getMapsApiDirectionsUrl() {
-        String waypoints = "waypoints=optimize:true|"
-                + waypoint4.latitude + "," + waypoint4.longitude
-                + "|" + waypoint5.latitude + "," + waypoint5.longitude
-                + "|" + waypoint6.latitude + "," + waypoint6.longitude
-                + "|" + waypoint7.latitude + "," + waypoint7.longitude
-                + "|" + waypoint8.latitude + "," + waypoint8.longitude
-                + "|" + waypoint9.latitude + "," + waypoint9.longitude
-                + "|" + waypoint10.latitude + "," + waypoint10.longitude
-                + "|" + waypoint11.latitude + "," + waypoint11.longitude;
-
         String sensor = "&sensor=false";
 
         String url = "https://maps.googleapis.com/maps/api/directions/json?";
 
-        String origin = "origin=" + waypoint2.latitude + ","+ waypoint2.longitude +"&";
         String destination = "destination="+ITESM.latitude + "," + ITESM.longitude + "&";
         url = url + origin + destination +waypoints+ sensor;
         return url;
     }
-    private void addMarkers() {
+
+    private void addMarkersValle() {
         if (mMap != null) {
             mMap.addMarker(new MarkerOptions().position(ITESM)
-                    .title("First Point"));
+                    .title("Fin"));
             mMap.addMarker(new MarkerOptions().position(waypoint2)
-                    .title("Second Point"));
+                    .title("Inicio"));
             mMap.setMyLocationEnabled(true);
 
         }
     }
+    private void addMarkersSJ() {
+        if (mMap != null) {
+            mMap.addMarker(new MarkerOptions().position(ITESM)
+                    .title("Fin"));
+            mMap.addMarker(new MarkerOptions().position(waypointSJ)
+                    .title("Inicio"));
+            mMap.setMyLocationEnabled(true);
+
+        }
+    }
+    private void addMarkersSN() {
+        if (mMap != null) {
+            mMap.addMarker(new MarkerOptions().position(ITESM)
+                    .title("Fin"));
+            mMap.addMarker(new MarkerOptions().position(waypointSN)
+                    .title("Inicio"));
+            mMap.setMyLocationEnabled(true);
+
+        }
+    }
+
+
     private class ReadTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... url) {
@@ -338,7 +414,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    if (!snapshot.getValue().toString().equals("1") && !snapshot.getValue().toString().equals("2")){
+                    if (!(snapshot.getValue().toString().equals("1")) && !(snapshot.getValue().toString().equals("2"))){
+                        Toast.makeText(getApplicationContext(), "Recieving new coordinates", Toast.LENGTH_SHORT).show();
                         String newLatLon = snapshot.getValue().toString();
                         String[] separate = newLatLon.split(",");
                         newLat = Double.parseDouble(separate[0]);

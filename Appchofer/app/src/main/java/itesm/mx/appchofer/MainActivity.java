@@ -76,6 +76,7 @@ public class MainActivity extends ActionBarActivity {
                         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                         mlocListener = new MyLocationListener();
                         mlocManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
+                        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 0, mlocListener);
                         if (mlocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                             if(MyLocationListener.latitude>0)
                             {
@@ -94,20 +95,20 @@ public class MainActivity extends ActionBarActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     if (dataSnapshot.getValue().toString().equals("2")){
-                                        mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                                        mlocListener = new MyLocationListener();
                                         mlocManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
+                                        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 0, mlocListener);
                                         if (mlocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                                             if(MyLocationListener.latitude>0)
                                             {
                                                 position = String.valueOf(MyLocationListener.latitude) + "," + String.valueOf(MyLocationListener.longitude);
                                                 myFirebaseRef.child(selectedRoute).child(idStudent).setValue(position);
-                                                Toast.makeText(getApplicationContext(), "sending new location to " + selectedRoute, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "sending new location 5 sec to " + selectedRoute, Toast.LENGTH_SHORT).show();
+                                                Log.i("this", "sending new loc 5 sec is " + position);
 
                                             }
                                             else
                                             {
-                                                Toast.makeText(getApplicationContext(), "Wait, gps is loading", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Wait, gps is loading 5 sec update", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     }
