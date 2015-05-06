@@ -191,6 +191,30 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                     new LatLng(25.662611, -100.297167),
                     new LatLng(25.660222, -100.282297),
                     new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+        }
+        if(route.equals("Circuito2")){
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
+                    new LatLng(25.662611, -100.297167),
+                    new LatLng(25.660222, -100.282297),
+                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+        }
+        if(route.equals("Circuito3")){
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
+                    new LatLng(25.662611, -100.297167),
+                    new LatLng(25.660222, -100.282297),
+                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
+            String url = getMapsApiDirectionsUrl();
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
         }
 
 
@@ -308,7 +332,11 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                 polyLineOptions.color(Color.BLUE);
             }
 
-            mMap.addPolyline(polyLineOptions);
+            if(route.equals("Valle1")|| route.equals("Cumbres") || route.equals("San Nicolas")){
+                mMap.addPolyline(polyLineOptions);
+            }
+
+
             new Task().execute(0);
         }
     }
