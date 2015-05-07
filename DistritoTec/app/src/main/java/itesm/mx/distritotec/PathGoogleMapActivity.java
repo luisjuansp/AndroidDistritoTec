@@ -108,6 +108,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
     String idStudent;
     String waypoints;
     String origin;
+    Location tequito = new Location("tequito");
 
     LatLng tec = new LatLng(25.649713, -100.290032);
 
@@ -131,6 +132,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             route = extras.getString("route");
             idStudent = extras.getString("idStudent");
         }
+        tequito.setLatitude(25.652540);
+        tequito.setLongitude(-100.291099);
 
         Log.i("This is what i want", String.valueOf(newLat));
 
@@ -187,30 +190,39 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             addMarkersSN();
         }
         if(route.equals("Circuito1")){
-            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
-                    new LatLng(25.662611, -100.297167),
-                    new LatLng(25.660222, -100.282297),
-                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647992, -100.290054),
+                    new LatLng(25.658749, -100.296910),
+                    new LatLng(25.662669, -100.297189),
+                    new LatLng(25.660204, -100.282449),
+                    new LatLng(25.650757, -100.275678),
+                    new LatLng(25.652061, -100.280232),
+                    new LatLng(25.653013, -100.284140)).strokeColor(Color.BLUE));
             origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
             String url = getMapsApiDirectionsUrl();
             ReadTask downloadTask = new ReadTask();
             downloadTask.execute(url);
         }
         if(route.equals("Circuito2")){
-            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
-                    new LatLng(25.662611, -100.297167),
-                    new LatLng(25.660222, -100.282297),
-                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647992, -100.290054),
+                    new LatLng(25.659586, -100.297650),
+                    new LatLng(25.659301, -100.298438),
+                    new LatLng(25.656679, -100.299164),
+                    new LatLng(25.657196, -100.301956),
+                    new LatLng(25.651319, -100.303181),
+                    new LatLng(25.643021, -100.301745)).strokeColor(Color.GREEN));
             origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
             String url = getMapsApiDirectionsUrl();
             ReadTask downloadTask = new ReadTask();
             downloadTask.execute(url);
         }
         if(route.equals("Circuito3")){
-            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.647921, -100.290150),
-                    new LatLng(25.662611, -100.297167),
-                    new LatLng(25.660222, -100.282297),
-                    new LatLng(25.654303, -100.278263)).strokeColor(Color.RED));
+            Polygon polygon = mMap.addPolygon(new PolygonOptions().add(new LatLng(25.644269, -100.297250),
+                    new LatLng(25.653008, -100.284150),
+                    new LatLng(25.652260, -100.280403),
+                    new LatLng(25.648701, -100.279752),
+                    new LatLng(25.650681, -100.275514),
+                    new LatLng(25.643054, -100.274043),
+                    new LatLng(25.635106, -100.291086)).strokeColor(Color.RED));
             origin = "origin=" + waypointSN.latitude + ","+ waypointSN.longitude +"&";
             String url = getMapsApiDirectionsUrl();
             ReadTask downloadTask = new ReadTask();
@@ -435,7 +447,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
     }
 
     public void setLocOnMap(double lat, double lon){
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 5000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 10000, null);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),17));
         chofer = mMap.addMarker((new MarkerOptions()
                 .position(new LatLng(lat, lon))
@@ -451,6 +463,9 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                         newLat = Double.parseDouble(separate[0]);
                         newLon = Double.parseDouble(separate[1]);
                         chofer.setPosition(new LatLng(newLat, newLon));
+
+
+
                     }
                 }
 
@@ -466,7 +481,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
             while (mGoogleApiClient.isConnected()) {
                 publishProgress(0);
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
