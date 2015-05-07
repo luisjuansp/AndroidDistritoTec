@@ -43,7 +43,16 @@ public class WaitingLocation extends ActionBarActivity {
         Firebase.setAndroidContext(this);
         myFirebaseRef = new Firebase("https://blistering-inferno-2546.firebaseio.com/");
 
-
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        if(!DeleteStudent) {
+                            Toast.makeText(getApplicationContext(), "No se pudo conectar con la base de datos",Toast.LENGTH_SHORT).show();
+                            Log.i("tag", "This'll run 300 milliseconds later");
+                        }
+                    }
+                },
+                10000);
 
         myFirebaseRef.child(route).child(idStudent).setValue("1");
         //myFirebaseRef.child(route).child(idStudent).child("response").setValue("1");

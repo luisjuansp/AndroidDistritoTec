@@ -1,6 +1,13 @@
 package itesm.mx.distritotec;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,6 +49,47 @@ public class MainActivity extends ActionBarActivity {
         Button favBT = (Button) findViewById(R.id.favBT);
 
 
+        WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        if (!wifi.isWifiEnabled()){
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("No hay conexion con Wi-fi (Recomendado)")
+                    .setTitle("Alerta");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+            dialog = builder.create();
+            dialog.show();
+        }
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("No esta habilitado el GPS (Recomendado)")
+                    .setTitle("Alerta");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+            dialog = builder.create();
+            dialog.show();
+        }
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("Por favor habilite el internet, si no, no funcionara la aplicacion")
+                    .setTitle("Alerta");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+            dialog = builder.create();
+            dialog.show();
+        }
         View.OnClickListener registro = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
