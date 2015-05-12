@@ -340,7 +340,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements Connectio
                 }
 
                 polyLineOptions.addAll(points);
-                polyLineOptions.width(5);
+                polyLineOptions.width(4);
                 polyLineOptions.color(Color.BLUE);
             }
 
