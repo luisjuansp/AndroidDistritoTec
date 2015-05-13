@@ -30,7 +30,6 @@ public class WaitingLocation extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("ENTERING METHOD", "WAITINGLOCATION ONCREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_location);
 
@@ -55,7 +54,6 @@ public class WaitingLocation extends ActionBarActivity {
                 10000);
 
         myFirebaseRef.child(route).child(idStudent).setValue("1");
-        //myFirebaseRef.child(route).child(idStudent).child("response").setValue("1");
 
 
         mapListener = new ValueEventListener() {
@@ -87,23 +85,14 @@ public class WaitingLocation extends ActionBarActivity {
         };
 
         myFirebaseRef.child(route).child(idStudent).addValueEventListener(mapListener);
-
-
-
-
-
     }
-
-
 
     @Override
     protected void onResume() {
-        Log.i("ENTERING METHOD", "WAITINGLOCATION ONRESUME");
         super.onResume();
         if(DeleteStudent){
             Intent resultIntent = new Intent();
             setResult(Activity.RESULT_OK, resultIntent);
-            Log.i("PRESSING BACK","IN WAITINGLOCATION ACTIVITY");
             finish();
         }
 
@@ -111,7 +100,6 @@ public class WaitingLocation extends ActionBarActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        //if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 Log.i("ENTERING METHOD", "WAITINGLOCATION ON ACTIVITY RESULT");
                 Intent resultIntent = new Intent();
@@ -119,7 +107,6 @@ public class WaitingLocation extends ActionBarActivity {
                 Log.i("GOING BACK","IN WAITINGLOCATION ACTIVITY");
                 finish();
             }
-        //}
     }
 
     @Override
@@ -127,7 +114,6 @@ public class WaitingLocation extends ActionBarActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Intent resultIntent = new Intent();
             setResult(Activity.RESULT_OK, resultIntent);
-            Log.i("PRESSING BACK","IN WAITINGLOCATION ACTIVITY");
             finish();
             return true;
 
@@ -139,7 +125,6 @@ public class WaitingLocation extends ActionBarActivity {
     public void onPause(){
         super.onPause();
         myFirebaseRef.child(route).child(idStudent).removeEventListener(mapListener);
-
     }
 
 
@@ -152,12 +137,8 @@ public class WaitingLocation extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
