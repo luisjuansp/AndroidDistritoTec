@@ -78,7 +78,7 @@
             android:label="@string/title_activity_rutas_act" >
         </activity>
         <activity
-            android:screenOrientation="portrait"
+
             android:name=".Fav_Act"
             android:label="@string/title_activity_fav_" >
         </activity>

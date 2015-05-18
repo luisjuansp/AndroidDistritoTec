@@ -41,7 +41,5 @@
         android:layout_height="wrap_content"
         android:text="Favoritos"
         android:layout_marginTop="60dp"
-        android:id="@+id/favBT"
-        android:layout_gravity="right"
-        android:layout_weight="0.07" />
+        android:id="@+id/favBT" />
 </LinearLayout>
